@@ -52,6 +52,19 @@ namespace PriceOfSaleTests
             Assert.AreEqual(expectedResult, result);
         }
 
+        [Test]
+        public void NullBarcodeReturnsScanningErrorEmptyBarcode()
+        {
+            // arrange
+            var expectedResult = "Scanning error: empty barcode";
+
+            // act
+            var result = GetPrice(null);
+
+            // assert
+            Assert.AreEqual(expectedResult, result);
+        }
+
         private string GetPrice(string barcode)
         {
             if (barcode == "12345")
@@ -62,8 +75,12 @@ namespace PriceOfSaleTests
             {
                 return $"Product not found: {barcode}";
             }
-            
-            return "Scanning error: empty barcode";
+            else if (string.IsNullOrWhiteSpace(barcode))
+            {
+                return "Scanning error: empty barcode";
+            }
+
+            return "";
         }
     }
 }
